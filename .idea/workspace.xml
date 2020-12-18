@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83911cfb-149e-4125-b01a-1e5394eadda8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.env.sample" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/layout/Navbar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/private/AddProduct.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/private/EditProduct.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/private/Product.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/private/Products.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/public/Login.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/public/NotFound.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/public/Register.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +41,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1608261599291</updated>
-      <workItem from="1608261604494" duration="2067000" />
+      <workItem from="1608261604494" duration="2482000" />
     </task>
     <servers />
   </component>
