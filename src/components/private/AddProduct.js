@@ -49,7 +49,8 @@ class AddProduct extends React.Component {
 
         const token = localStorage.getItem("userAuthToken");
 
-        axios.post(process.env.REACT_APP_API_ENDPOINT + 'products?token=' + token, form_data, {headers: headers}).then(response => {
+        const apiEndpoint = process.env.REACT_APP_API_ENDPOINT ? process.env.REACT_APP_API_ENDPOINT : 'http://127.0.0.1:8000/api/'
+        axios.post(apiEndpoint + 'products?token=' + token, form_data, {headers: headers}).then(response => {
             console.log(response);
             if (response.status === 200 && response.data.success) {
                 this.props.history.push('/products');
@@ -122,7 +123,8 @@ class AddProduct extends React.Component {
                                 <textarea
                                     className="form-control form-control-lg"
                                     placeholder="Write something about this product..."
-                                    name="description" onChange={this.inputChangeHandler} value={this.state.data_to_post.description}
+                                    name="description" onChange={this.inputChangeHandler}
+                                    value={this.state.data_to_post.description}
                                     required></textarea>
                                 <small className="text-danger" id="description-val-err-msg"></small>
                             </div>
@@ -137,14 +139,16 @@ class AddProduct extends React.Component {
                             </div>
                             <div className="form-group">
                                 <div className="custom-file">
-                                    <input type="file" name="image"
+                                    <input type="file" name="image" accept="image/*"
                                            className="form-control form-control-lg custom-file-input"
                                            ref={this.fileInput} onChange={this.filePreviewHandler} required/>
                                     <label className="custom-file-label">Choose file</label>
                                 </div>
                                 <small className="text-danger" id="image-val-err-msg"></small>
                             </div>
-                            <div align="center" style={this.state.imagePreviewUrl ? {display: 'block'} : {display: 'none'}} className="mb-3">
+                            <div align="center"
+                                 style={this.state.imagePreviewUrl ? {display: 'block'} : {display: 'none'}}
+                                 className="mb-3">
                                 <img
                                     src={this.state.imagePreviewUrl}
                                     className="img-thumbnail img-fluid" style={{

@@ -38,7 +38,9 @@ class Navbar extends React.Component {
     logOut = () => {
         const token = localStorage.getItem("userAuthToken");
         if (token) {
-            axios.get(process.env.REACT_APP_API_ENDPOINT + 'logout/?token=' + token).then(response => {
+            const apiEndpoint = process.env.REACT_APP_API_ENDPOINT ? process.env.REACT_APP_API_ENDPOINT : 'http://127.0.0.1:8000/api/'
+
+            axios.get(apiEndpoint + 'logout/?token=' + token).then(response => {
                 console.log(response);
                 if (response.status === 200 && response.data.success) {
                     localStorage.clear();

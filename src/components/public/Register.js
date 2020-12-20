@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
 import Navbar from "../layout/Navbar";
-import { withSnackbar } from 'notistack';
+import {withSnackbar} from 'notistack';
 import $ from 'jquery'
 
 class Register extends React.Component {
@@ -40,7 +40,8 @@ class Register extends React.Component {
 
         const data = qs.stringify(this.state.data_to_post);
         // console.log(data);
-        axios.post(process.env.REACT_APP_API_ENDPOINT+ 'register', data, {headers: headers}).then(response => {
+        const apiEndpoint = process.env.REACT_APP_API_ENDPOINT ? process.env.REACT_APP_API_ENDPOINT : 'http://127.0.0.1:8000/api/'
+        axios.post(apiEndpoint + 'register', data, {headers: headers}).then(response => {
             console.log(response);
             if (response.status === 200 && response.data.success) {
                 this.props.history.push('/login');
@@ -49,7 +50,7 @@ class Register extends React.Component {
         }).catch(error => {
             if (error.response) {
                 console.log(error.response)
-                switch(error.response.status) {
+                switch (error.response.status) {
                     case 400:
                         // console.log(error.response.data.error)
                         const errors = error.response.data.error;

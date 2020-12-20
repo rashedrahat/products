@@ -82,7 +82,8 @@ class Products extends React.Component {
             let form_data = new FormData();
             form_data.append('_method', 'DELETE');
 
-            axios.post(process.env.REACT_APP_API_ENDPOINT + 'products/' + this.state.productIdToDel + '?token=' + token, form_data, {headers: headers}).then(response => {
+            const apiEndpoint = process.env.REACT_APP_API_ENDPOINT ? process.env.REACT_APP_API_ENDPOINT : 'http://127.0.0.1:8000/api/'
+            axios.post(apiEndpoint + 'products/' + this.state.productIdToDel + '?token=' + token, form_data, {headers: headers}).then(response => {
                 console.log(response);
                 if (response.status === 200 && response.data.success) {
                     console.log(response.data.data)

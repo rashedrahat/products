@@ -39,7 +39,8 @@ class Login extends React.Component {
 
         const data = qs.stringify(this.state.data_to_post);
         // console.log(data);
-        axios.post(process.env.REACT_APP_API_ENDPOINT + 'login', data, {headers: headers}).then(response => {
+        const apiEndpoint = process.env.REACT_APP_API_ENDPOINT ? process.env.REACT_APP_API_ENDPOINT : 'http://127.0.0.1:8000/api/'
+        axios.post(apiEndpoint + 'login', data, {headers: headers}).then(response => {
             console.log(response);
             if (response.status === 200 && response.data.success) {
                 localStorage.setItem('userAuthToken', response.data.token);

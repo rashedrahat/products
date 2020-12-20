@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import Navbar from "../layout/Navbar";
 import axios from "axios";
-import { withSnackbar } from 'notistack';
+import {withSnackbar} from 'notistack';
 
 class Product extends React.Component {
     constructor(props) {
@@ -21,7 +21,9 @@ class Product extends React.Component {
 
     componentDidMount() {
         const token = localStorage.getItem("userAuthToken");
-        axios.get(process.env.REACT_APP_API_ENDPOINT + 'products/' + this.props.match.params.id + '?token=' + token).then(response => {
+
+        const apiEndpoint = process.env.REACT_APP_API_ENDPOINT ? process.env.REACT_APP_API_ENDPOINT : 'http://127.0.0.1:8000/api/'
+        axios.get(apiEndpoint + 'products/' + this.props.match.params.id + '?token=' + token).then(response => {
             console.log(response);
             if (response.status === 200 && response.data.success) {
                 console.log(response.data.data)
@@ -44,7 +46,7 @@ class Product extends React.Component {
                     case 401:
                         if (errorMsg === 'token_expired')
                             localStorage.clear();
-                            this.props.history.push('/login')
+                        this.props.history.push('/login')
                         break;
                     default:
                         this.handleError('Something went wrong');

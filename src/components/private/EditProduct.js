@@ -36,7 +36,9 @@ class EditProduct extends React.Component {
 
     componentDidMount() {
         const token = localStorage.getItem("userAuthToken");
-        axios.get(process.env.REACT_APP_API_ENDPOINT + 'products/' + this.props.match.params.id + '?token=' + token).then(response => {
+
+        const apiEndpoint = process.env.REACT_APP_API_ENDPOINT ? process.env.REACT_APP_API_ENDPOINT : 'http://127.0.0.1:8000/api/'
+        axios.get(apiEndpoint + 'products/' + this.props.match.params.id + '?token=' + token).then(response => {
             // console.log(response);
             if (response.status === 200 && response.data.success) {
                 console.log(response.data.data)
@@ -90,7 +92,8 @@ class EditProduct extends React.Component {
 
         const token = localStorage.getItem("userAuthToken");
 
-        axios.post(process.env.REACT_APP_API_ENDPOINT + 'products/' + this.props.match.params.id + '?token=' + token, form_data, {headers: headers}).then(response => {
+        const apiEndpoint = process.env.REACT_APP_API_ENDPOINT ? process.env.REACT_APP_API_ENDPOINT : 'http://127.0.0.1:8000/api/'
+        axios.post(apiEndpoint + 'products/' + this.props.match.params.id + '?token=' + token, form_data, {headers: headers}).then(response => {
             console.log(response);
             if (response.status === 200 && response.data.success) {
                 this.props.history.push('/products');
@@ -179,7 +182,7 @@ class EditProduct extends React.Component {
                             </div>
                             <div className="form-group">
                                 <div className="custom-file">
-                                    <input type="file" name="image"
+                                    <input type="file" name="image" accept="image/*"
                                            className="form-control form-control-lg custom-file-input"
                                            ref={this.fileInput} onChange={this.filePreviewHandler}/>
                                     <label className="custom-file-label">Choose file <small>(Leave blank if not want to
