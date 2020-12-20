@@ -60,7 +60,7 @@ class Product extends React.Component {
                 <Navbar/>
                 <div className="container">
                     <div className="container py-4">
-                        <Link className="btn btn-primary" to="/products">
+                        <Link className="btn btn-primary btn-sm" to="/products">
                             Go Back
                         </Link>
                         <h1 className="display-4">{this.state.product.title}</h1>

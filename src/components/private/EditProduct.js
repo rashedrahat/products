@@ -3,6 +3,7 @@ import Navbar from "../layout/Navbar";
 import axios from "axios";
 import $ from "jquery";
 import {withSnackbar} from 'notistack';
+import {Link} from "react-router-dom";
 
 class EditProduct extends React.Component {
     constructor(props) {
@@ -143,6 +144,9 @@ class EditProduct extends React.Component {
                 <Navbar/>
                 <div className="container">
                     <div className="w-75 mx-auto shadow p-5">
+                        <Link className="btn btn-primary btn-sm" to="/products">
+                            Go Back
+                        </Link>
                         <h2 className="text-center mb-4">Edit the Product</h2>
                         <form onSubmit={this.formSubmitHandler}>
                             <div className="form-group">
