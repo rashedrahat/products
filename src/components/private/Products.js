@@ -31,7 +31,9 @@ class Products extends React.Component {
 
     fetchProductList = () => {
         const token = localStorage.getItem("userAuthToken");
-        axios.get(process.env.REACT_APP_API_ENDPOINT + 'products/?token=' + token).then(response => {
+
+        const apiEndpoint = process.env.REACT_APP_API_ENDPOINT ? process.env.REACT_APP_API_ENDPOINT : 'http://127.0.0.1:8000/api/'
+        axios.get(apiEndpoint+ 'products/?token=' + token).then(response => {
             console.log(response);
             if (response.status === 200) {
                 // console.log(response.data)
