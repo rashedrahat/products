@@ -1,6 +1,5 @@
 import React from 'react';
 import {Route, Redirect, withRouter} from 'react-router-dom';
-import ROUTES from "../routes";
 
 
 const PrivateRoute = ({component: Component, path}) => {
@@ -10,7 +9,7 @@ const PrivateRoute = ({component: Component, path}) => {
     }
     return (
         <Route exact path={path}
-               render={props => (isAuthenticated ? <Component {...props} /> : <Redirect to={ROUTES.LOGIN} />)}/>
+               render={props => (isAuthenticated ? <Component {...props} /> : <Redirect to='/login'/>)}/>
     )
 };
 

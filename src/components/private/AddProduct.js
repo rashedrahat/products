@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from "../layout/Navbar";
 import axios from "axios";
 import $ from "jquery";
-import { withSnackbar } from 'notistack';
+import {withSnackbar} from 'notistack';
 
 class AddProduct extends React.Component {
     constructor(props) {
@@ -13,10 +13,9 @@ class AddProduct extends React.Component {
                 description: '',
                 price: '',
             },
+            imagePreviewUrl: ''
         };
 
-        this.inputChangeHandler = this.inputChangeHandler.bind(this);
-        this.formSubmitHandler = this.formSubmitHandler.bind(this);
         this.fileInput = React.createRef();
     }
 
@@ -81,6 +80,22 @@ class AddProduct extends React.Component {
         this.setState({data_to_post: obj});
     };
 
+    filePreviewHandler = (e) => {
+        $('#' + e.target.name + "-val-err-msg").text('')
+        e.preventDefault();
+
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                imagePreviewUrl: reader.result
+            });
+        }
+
+        reader.readAsDataURL(file)
+    };
+
     render() {
         return (
             <div>
@@ -103,8 +118,8 @@ class AddProduct extends React.Component {
                                 <textarea
                                     className="form-control form-control-lg"
                                     placeholder="Write something about this product..."
-                                    name="description" onChange={this.inputChangeHandler}
-                                    required>{this.state.data_to_post.description}</textarea>
+                                    name="description" onChange={this.inputChangeHandler} value={this.state.data_to_post.description}
+                                    required></textarea>
                                 <small className="text-danger" id="description-val-err-msg"></small>
                             </div>
                             <div className="form-group">
@@ -118,10 +133,20 @@ class AddProduct extends React.Component {
                             </div>
                             <div className="form-group">
                                 <div className="custom-file">
-                                    <input type="file" name="image" className="form-control form-control-lg custom-file-input" ref={this.fileInput} required/>
+                                    <input type="file" name="image"
+                                           className="form-control form-control-lg custom-file-input"
+                                           ref={this.fileInput} onChange={this.filePreviewHandler} required/>
                                     <label className="custom-file-label">Choose file</label>
                                 </div>
                                 <small className="text-danger" id="image-val-err-msg"></small>
+                            </div>
+                            <div align="center" style={this.state.imagePreviewUrl ? {display: 'block'} : {display: 'none'}} className="mb-3">
+                                <img
+                                    src={this.state.imagePreviewUrl}
+                                    className="img-thumbnail img-fluid" style={{
+                                    maxWidth: '33%',
+                                    height: 'auto'
+                                }}/>
                             </div>
                             <button className="btn btn-primary btn-block" type='submit'>Add</button>
                         </form>

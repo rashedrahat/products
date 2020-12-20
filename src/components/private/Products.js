@@ -2,16 +2,34 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import Navbar from "../layout/Navbar";
 import axios from "axios";
+import SweetAlert from 'react-bootstrap-sweetalert';
+import {withSnackbar} from 'notistack';
 
 class Products extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            show: false,
+            productIdToDel: null,
             products: []
         };
     }
 
-    componentDidMount() {
+    handleSuccess(msg) {
+        this.key = this.props.enqueueSnackbar(msg, {
+            variant: 'success',
+            autoHideDuration: 2000,
+        });
+    }
+
+    handleError(msg) {
+        this.key = this.props.enqueueSnackbar(msg, {
+            variant: 'error',
+            autoHideDuration: 2000,
+        });
+    }
+
+    fetchProductList = () => {
         const token = localStorage.getItem("userAuthToken");
         axios.get(process.env.REACT_APP_API_ENDPOINT + 'products/?token=' + token).then(response => {
             console.log(response);
@@ -39,8 +57,64 @@ class Products extends React.Component {
         });
     }
 
+    componentDidMount() {
+        this.fetchProductList()
+    }
+
     deleteProduct = (id) => {
-        console.log(id)
+        // console.log(id)
+        this.setState({productIdToDel: id, show: true})
+    }
+
+    onCancel = () => {
+        // console.log(id)
+        this.setState({productIdToDel: null, show: false})
+    }
+
+    onConfirm = () => {
+        // console.log(id)
+        this.setState({show: false}, () => {
+            const token = localStorage.getItem("userAuthToken");
+
+            const headers = {
+                'Content-Type': 'multipart/form-data',
+            };
+            let form_data = new FormData();
+            form_data.append('_method', 'DELETE');
+
+            axios.post(process.env.REACT_APP_API_ENDPOINT + 'products/' + this.state.productIdToDel + '?token=' + token, form_data, {headers: headers}).then(response => {
+                console.log(response);
+                if (response.status === 200 && response.data.success) {
+                    console.log(response.data.data)
+                    this.setState({productIdToDel: null})
+                    this.handleSuccess(response.data.message)
+                    this.fetchProductList()
+                }
+            }).catch(error => {
+                if (error.response) {
+                    console.log(error.response)
+                    const errorMsg = error.response.data.error;
+                    switch (error.response.status) {
+                        case 400:
+                            if (errorMsg === 'token_not_provided') {
+                                localStorage.clear();
+                                this.props.history.push('/login')
+                            } else {
+                                this.handleError(error.response.data.message);
+                                this.props.history.push('/products')
+                            }
+                            break;
+                        case 401:
+                            if (errorMsg === 'token_expired')
+                                localStorage.clear();
+                            this.props.history.push('/login')
+                            break;
+                        default:
+                            this.handleError('Something went wrong');
+                    }
+                }
+            });
+        })
     }
 
     render() {
@@ -72,7 +146,7 @@ class Products extends React.Component {
                                             <td>${product.price}</td>
                                             <td>
                                                 <img
-                                                    src={process.env.REACT_APP_IMAGE_ENDPOINT || 'http://127.0.0.1:8000/storage/images/' ?
+                                                    src={process.env.REACT_APP_IMAGE_ENDPOINT ?
                                                         process.env.REACT_APP_IMAGE_ENDPOINT + product.image_name
                                                         : 'http://127.0.0.1:8000/storage/images/' + product.image_name}
                                                     className="rounded-circle" alt={product.image_name}
@@ -105,9 +179,22 @@ class Products extends React.Component {
                         </table>
                     </div>
                 </div>
+                <SweetAlert
+                    show={this.state.show}
+                    warning
+                    showCancel
+                    confirmBtnText="Yes, delete it!"
+                    confirmBtnBsStyle="danger"
+                    title="Are you sure?"
+                    onConfirm={this.onConfirm}
+                    onCancel={this.onCancel}
+                    focusCancelBtn
+                >
+                    You will not be able to recover this product!
+                </SweetAlert>
             </div>
         );
     }
 }
 
-export default Products
+export default withSnackbar(Products)
